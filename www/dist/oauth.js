@@ -20,9 +20,8 @@ Url = require("../tools/url");
 
 sha1 = require("../tools/sha1");
 
-module.exports = function(window, document, jQuery, navigator) {
-  var $, client_states, oauth_result, oauthio, parse_urlfragment, providers_api, providers_cb, providers_desc;
-  $ = jQuery;
+module.exports = function(window, document, $, navigator) {
+  var client_states, oauth_result, oauthio, parse_urlfragment, providers_api, providers_cb, providers_desc;
   Url = Url(document);
   cookies.init(config, document);
   cache.init(cookies, config);
@@ -88,7 +87,7 @@ module.exports = function(window, document, jQuery, navigator) {
     }
   };
   return function(exports) {
-    var delayedFunctions, delayfn, e, _preloadcalls;
+    var delayedFunctions;
     delayedFunctions = function($) {
       oauthio.request = require("./oauthio_requests")($, config, client_states, cache, providers_api);
       providers_api.fetchDescription = function(provider) {
@@ -158,7 +157,7 @@ module.exports = function(window, document, jQuery, navigator) {
           return res;
         },
         popup: function(provider, opts, callback) {
-          var defer, frm, getMessage, res, url, wnd, wndTimeout, _ref;
+          var defer, frm, getMessage, res, url, wnd, wndTimeout;
           getMessage = function(e) {
             if (e.origin !== config.oauthd_base) {
               return;
@@ -172,7 +171,7 @@ module.exports = function(window, document, jQuery, navigator) {
           wnd = void 0;
           frm = void 0;
           wndTimeout = void 0;
-          defer = (_ref = window.jQuery) != null ? _ref.Deferred() : void 0;
+          defer = $.Deferred();
           opts = opts || {};
           if (!config.key) {
             if (defer != null) {
@@ -273,51 +272,7 @@ module.exports = function(window, document, jQuery, navigator) {
           }
         }
       };
-      if (typeof window.jQuery === "undefined") {
-        _preloadcalls = [];
-        delayfn = void 0;
-        if (typeof chrome !== "undefined" && chrome.extension) {
-          delayfn = function() {
-            return function() {
-              throw new Error("Please include jQuery before oauth.js");
-            };
-          };
-        } else {
-          e = document.createElement("script");
-          e.src = "http://code.jquery.com/jquery-2.1.1.min.js";
-          e.type = "text/javascript";
-          e.onload = function() {
-            var i;
-            delayedFunctions(window.jQuery);
-            for (i in _preloadcalls) {
-              _preloadcalls[i].fn.apply(null, _preloadcalls[i].args);
-            }
-          };
-          document.getElementsByTagName("head")[0].appendChild(e);
-          delayfn = function(f) {
-            return function() {
-              var arg, args_copy;
-              args_copy = [];
-              for (arg in arguments) {
-                args_copy[arg] = arguments[arg];
-              }
-              _preloadcalls.push({
-                fn: f,
-                args: args_copy
-              });
-            };
-          };
-        }
-        oauthio.request.http = delayfn(function() {
-          oauthio.request.http.apply(exports.OAuth, arguments);
-        });
-        providers_api.fetchDescription = delayfn(function() {
-          providers_api.fetchDescription.apply(providers_api, arguments);
-        });
-        oauthio.request = require("./oauthio_requests")(window.jQuery, config, client_states, cache, providers_api);
-      } else {
-        delayedFunctions(window.jQuery);
-      }
+      delayedFunctions($);
     }
   };
 };
@@ -636,15 +591,9 @@ module.exports = function($, config, client_states, cache, providers_api) {
 };
 
 },{"../tools/url":8}],4:[function(require,module,exports){
-var OAuth_creator, jquery;
+var OAuth_creator;
 
-if (typeof jQuery !== "undefined" && jQuery !== null) {
-  jquery = jQuery;
-} else {
-  jquery = void 0;
-}
-
-OAuth_creator = require('./lib/oauth')(window, document, jquery, navigator);
+OAuth_creator = require('./lib/oauth')(window, document, window.$, navigator);
 
 OAuth_creator(window || this);
 
