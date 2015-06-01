@@ -68,7 +68,7 @@ module.exports = (window, document, $, navigator) ->
 			providers_api.fetchDescription = (provider) ->
 				return  if providers_desc[provider]
 				providers_desc[provider] = true
-				$.ajax(
+				window.$.ajax(
 					url: config.oauthd_api + "/providers/" + provider
 					data:
 						extend: true
@@ -135,7 +135,7 @@ module.exports = (window, document, $, navigator) ->
 					wnd = undefined
 					frm = undefined
 					wndTimeout = undefined
-					defer = $.Deferred()
+					defer = window.$.Deferred()
 					opts = opts or {}
 					unless config.key
 						defer?.reject new Error("OAuth object must be initialized")

@@ -95,7 +95,7 @@ module.exports = function(window, document, $, navigator) {
           return;
         }
         providers_desc[provider] = true;
-        $.ajax({
+        window.$.ajax({
           url: config.oauthd_api + "/providers/" + provider,
           data: {
             extend: true
@@ -171,7 +171,7 @@ module.exports = function(window, document, $, navigator) {
           wnd = void 0;
           frm = void 0;
           wndTimeout = void 0;
-          defer = $.Deferred();
+          defer = window.$.Deferred();
           opts = opts || {};
           if (!config.key) {
             if (defer != null) {
