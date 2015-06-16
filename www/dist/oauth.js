@@ -286,7 +286,7 @@ Url = require('../tools/url')();
 module.exports = function($, config, client_states, cache, providers_api) {
   return {
     http: function(opts) {
-      var defer, desc_opts, doRequest, i, options;
+      var defer, desc_opts, doRequest, i, options, _ref;
       doRequest = function() {
         var i, k, qs, request;
         request = options.oauthio.request || {};
@@ -305,7 +305,7 @@ module.exports = function($, config, client_states, cache, providers_api) {
             options.headers.oauthio += "&" + encodeURIComponent(k) + "=" + encodeURIComponent(options.oauthio.tokens[k]);
           }
           delete options.oauthio;
-          return $.ajax(options);
+          return window.$.ajax(options);
         }
         if (options.oauthio.tokens) {
           if (options.oauthio.tokens.access_token) {
@@ -336,7 +336,7 @@ module.exports = function($, config, client_states, cache, providers_api) {
             }
           }
           delete options.oauthio;
-          return $.ajax(options);
+          return window.$.ajax(options);
         }
       };
       options = {};
@@ -348,7 +348,7 @@ module.exports = function($, config, client_states, cache, providers_api) {
         desc_opts = {
           wait: !!options.oauthio.request
         };
-        defer = $ != null ? $.Deferred() : void 0;
+        defer = (_ref = window.$) != null ? _ref.Deferred() : void 0;
         providers_api.getDescription(options.oauthio.provider, desc_opts, function(e, desc) {
           if (e) {
             return defer != null ? defer.reject(e) : void 0;
@@ -368,10 +368,10 @@ module.exports = function($, config, client_states, cache, providers_api) {
       }
     },
     http_me: function(opts) {
-      var defer, desc_opts, doRequest, k, options;
+      var defer, desc_opts, doRequest, k, options, _ref;
       doRequest = function() {
-        var defer, k, promise, request;
-        defer = $ != null ? $.Deferred() : void 0;
+        var defer, k, promise, request, _ref;
+        defer = (_ref = window.$) != null ? _ref.Deferred() : void 0;
         request = options.oauthio.request || {};
         options.url = config.oauthd_url + "/auth/" + options.oauthio.provider + "/me";
         options.headers = options.headers || {};
@@ -384,7 +384,7 @@ module.exports = function($, config, client_states, cache, providers_api) {
         }
         delete options.oauthio;
         promise = $.ajax(options);
-        $.when(promise).done(function(data) {
+        window.$.when(promise).done(function(data) {
           if (defer != null) {
             defer.resolve(data.data);
           }
@@ -409,7 +409,7 @@ module.exports = function($, config, client_states, cache, providers_api) {
         desc_opts = {
           wait: !!options.oauthio.request
         };
-        defer = $ != null ? $.Deferred() : void 0;
+        defer = (_ref = window.$) != null ? _ref.Deferred() : void 0;
         providers_api.getDescription(options.oauthio.provider, desc_opts, function(e, desc) {
           if (e) {
             return defer != null ? defer.reject(e) : void 0;

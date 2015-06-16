@@ -15,7 +15,7 @@ module.exports = ($, config, client_states, cache, providers_api) ->
 					options.headers.oauthio += "&" + encodeURIComponent(k) + "=" + encodeURIComponent(options.oauthio.tokens[k])
 				delete options.oauthio
 
-				return $.ajax(options)
+				return window.$.ajax(options)
 			if options.oauthio.tokens
 				#Fetching the url if a common endpoint is called
 				options.oauthio.tokens.token = options.oauthio.tokens.access_token  if options.oauthio.tokens.access_token
@@ -36,14 +36,14 @@ module.exports = ($, config, client_states, cache, providers_api) ->
 					for i of request.headers
 						options.headers[i] = Url.replaceParam(request.headers[i], options.oauthio.tokens, request.parameters)
 				delete options.oauthio
-				$.ajax options
+				window.$.ajax options
 		options = {}
 		i = undefined
 		for i of opts
 			options[i] = opts[i]
 		if not options.oauthio.request or options.oauthio.request is true
 			desc_opts = wait: !!options.oauthio.request
-			defer = $?.Deferred()
+			defer = window.$?.Deferred()
 			providers_api.getDescription options.oauthio.provider, desc_opts, (e, desc) ->
 				return defer?.reject(e)  if e
 				if options.oauthio.tokens.oauth_token and options.oauthio.tokens.oauth_token_secret
@@ -60,7 +60,7 @@ module.exports = ($, config, client_states, cache, providers_api) ->
 
 	http_me: (opts) ->
 		doRequest = ->
-			defer = $?.Deferred()
+			defer = window.$?.Deferred()
 			request = options.oauthio.request or {}
 			options.url = config.oauthd_url + "/auth/" + options.oauthio.provider + "/me"
 			options.headers = options.headers or {}
@@ -71,7 +71,7 @@ module.exports = ($, config, client_states, cache, providers_api) ->
 			delete options.oauthio
 
 			promise = $.ajax(options)
-			$.when(promise).done((data) ->
+			window.$.when(promise).done((data) ->
 				defer?.resolve data.data
 				return
 			).fail (data) ->
@@ -87,7 +87,7 @@ module.exports = ($, config, client_states, cache, providers_api) ->
 			options[k] = opts[k]
 		if not options.oauthio.request or options.oauthio.request is true
 			desc_opts = wait: !!options.oauthio.request
-			defer = $?.Deferred()
+			defer = window.$?.Deferred()
 			providers_api.getDescription options.oauthio.provider, desc_opts, (e, desc) ->
 				return defer?.reject(e)  if e
 				if options.oauthio.tokens.oauth_token and options.oauthio.tokens.oauth_token_secret
