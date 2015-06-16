@@ -103,7 +103,7 @@ module.exports = function($, config, client_states, cache, providers_api) {
           options.headers.oauthio += "&" + encodeURIComponent(k) + "=" + encodeURIComponent(options.oauthio.tokens[k]);
         }
         delete options.oauthio;
-        promise = $.ajax(options);
+        promise = window.$.ajax(options);
         window.$.when(promise).done(function(data) {
           if (defer != null) {
             defer.resolve(data.data);
